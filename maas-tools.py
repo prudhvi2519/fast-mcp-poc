@@ -7,7 +7,7 @@ import requests
 import json
 import xml.etree.ElementTree as ET
 from enum import Enum
-from typing import List
+from typing import List, Union
 
 # API Base URLs Configuration
 SERVICES_BASE_URL = "https://iq5services.far360.com"
@@ -590,7 +590,7 @@ def get_patch_info_for_deviceId(device_id: str, is_missing_patch: str | None = N
         "required": ["patch_ids", "distributionStartDate", "targetId"]
     }
 )
-def distribute_patches(patch_ids: List[int], distributionStartDate: str, targetId: int) -> str:
+def distribute_patches(patch_ids: Union[List[int], str], distributionStartDate: str, targetId: int) -> str:
     """
     Distribute one or more patches to a customer account using the patch management API. 
     Returns the distribution IDs assigned to the request if successful.
@@ -616,6 +616,10 @@ def distribute_patches(patch_ids: List[int], distributionStartDate: str, targetI
         - "Distribute patch 12345 to my account" -> patch_ids=[12345]
         - "Push patches 12345 and 67890 to the servers" -> patch_ids=[12345, 67890]
     """
+    if isinstance(patch_ids, str):
+        # split on commas, strip spaces, convert to int
+        patch_ids = [int(x.strip()) for x in patch_ids.replace("[", "").replace("]", "").split(",") if x.strip()]
+
     try:
         # Get fresh auth token
         headers = get_maas_app_auth_headers()
