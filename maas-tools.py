@@ -573,7 +573,23 @@ def get_patch_info_for_deviceId(device_id: str, is_missing_patch: str | None = N
             return f"Request failed: {str(e)}"
 
 
-@mcp.tool
+@mcp.tool(
+    name="distribute_patches",
+    description="Distribute one or more patches to a customer account",
+    schema={
+        "type": "object",
+        "properties": {
+            "patch_ids": {
+                "type": "array",
+                "items": {"type": "integer"},
+                "description": "List of patch IDs. Example: [12345, 67890]"
+            },
+            "distributionStartDate": {"type": "string", "description": "MM/dd/yyyy"},
+            "targetId": {"type": "integer"}
+        },
+        "required": ["patch_ids", "distributionStartDate", "targetId"]
+    }
+)
 def distribute_patches(patch_ids: List[int], distributionStartDate: str, targetId: int) -> str:
     """
     Distribute one or more patches to a customer account using the patch management API. 
