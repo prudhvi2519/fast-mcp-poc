@@ -7,7 +7,8 @@ import requests
 import json
 import xml.etree.ElementTree as ET
 from enum import Enum
-from typing import List, Union
+from typing import List, Union, Annotated
+from pydantic import Field
 
 # API Base URLs Configuration
 SERVICES_BASE_URL = "https://iq5services.far360.com"
@@ -576,21 +577,12 @@ def get_patch_info_for_deviceId(device_id: str, is_missing_patch: str | None = N
 @mcp.tool(
     name="distribute_patches",
     description="Distribute one or more patches to a customer account",
-    schema={
-        "type": "object",
-        "properties": {
-            "patch_ids": {
-                "type": "array",
-                "items": {"type": "integer"},
-                "description": "List of patch IDs. Example: [12345, 67890]"
-            },
-            "distributionStartDate": {"type": "string", "description": "MM/dd/yyyy"},
-            "targetId": {"type": "integer"}
-        },
-        "required": ["patch_ids", "distributionStartDate", "targetId"]
-    }
+    
 )
-def distribute_patches(patch_ids: Union[List[int], str], distributionStartDate: str, targetId: int) -> str:
+def distribute_patches(
+    patch_ids: Annotated[Union[List[int], str], Field(description="List of patch IDs. Should always pass a Json Array of integers")], 
+    distributionStartDate: str, 
+    targetId: int) -> str:
     """
     Distribute one or more patches to a customer account using the patch management API. 
     Returns the distribution IDs assigned to the request if successful.
