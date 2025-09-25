@@ -238,7 +238,12 @@ def get_patch_summaries() -> str:
     """
     try:
         # Get fresh auth token
-        headers = get_maas_app_auth_headers()
+        headers = {
+            'X-FBL-UI-LOC': 'en',
+            'Accept-Charset': 'UTF',
+            'Cookie': PORTAL_COOKIE,
+            'Content-Type': 'application/json'
+        }
         
         url = f"{SERVICES_BASE_URL}/patch-mgmt/apis/2.0/internal/customer/{CUSTOMER_ID}/patch-summary"
         response = requests.get(url, headers=headers, timeout=30)
