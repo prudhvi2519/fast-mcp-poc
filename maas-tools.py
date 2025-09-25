@@ -147,7 +147,7 @@ def get_bearer_auth_headers() -> dict:
 
 def get_maas_app_auth_headers() -> dict:
     """Get headers with maas app authtoken."""
-    token = "0d2a988f-82ff-49a6-acb0-407c3528fa13-IhRkgCK"
+    token = "58cd7cb2-ed41-4a81-a73d-4486860779cf-IiyAzEx"
     return {'Authorization': f'MaaS token="{token}"'}
 
 # Generic publish method
