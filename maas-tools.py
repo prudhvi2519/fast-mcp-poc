@@ -213,65 +213,199 @@ def echo_tool(text: str) -> str:
     return text
 
 @mcp.tool
-def get_patch_summaries() -> str:
-    """
-    Retrieve a list of patch summaries for a customer account by authenticating with the MaaS360 authentication API
-    and then calling the patch summary API. The patch summaries contain details about software patches,
-    including their severity, category, and the number of devices missing each patch.
+def get_patch_sumamries_mock() -> str:
+    """Mock function to return sample patch summaries"""
+    sample_data = {
+        "patchRecords": [
+            {
+                "id": 18658665,
+                "name": "MS14-043: Security Update for Windows 1 for x64-based Systems (KB2978742)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q2978742",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS14-043",
+                "missingCount": 6
+            },
+            {
+                "id": 18658743,
+                "name": "MS13-090: Cumulative Security Update for ActiveX Killbits for Windows 1 for x64-based Systems (KB2900986)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q2900986",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS13-090",
+                "missingCount": 6
+            },
+            {
+                "id": 18658700,
+                "name": "MS15-080: Security Update for Microsoft .NET Framework 3.5.1 on Windows 1 SP1 and Windows Server 2008 R2 SP1 for x64 (KB3072305)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q3072305",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS15-080",
+                "missingCount": 6
+            },
+            {
+                "id": 18658698,
+                "name": "MS11-100: Security Update for Microsoft .NET Framework 3.5.1 on Windows 1 and Windows Server 2008 R2 SP1 for x64-based Systems (KB2656356)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q2656356",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS11-100",
+                "missingCount": 6
+            },
+            {
+                "id": 18658691,
+                "name": "MS14-057: Security Update for Microsoft .NET Framework 3.5.1 on Windows 1 and Windows Server 2008 R2 SP1 for x64-based Systems (KB2972100)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q2972100",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS14-057",
+                "missingCount": 6
+            },
+            {
+                "id": 18658675,
+                "name": "MS12-074: Security Update for Microsoft .NET Framework 3.5.1 on Windows 1 and Windows Server 2008 R2 SP1 for x64-based Systems (KB2729452)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q2729452",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS12-074",
+                "missingCount": 6
+            },
+            {
+                "id": 18658685,
+                "name": "MS16-001: Cumulative Security Update for Internet Explorer 8 for Windows 1 for x64-based Systems (KB3124275)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q3124275",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS16-001",
+                "missingCount": 6
+            },
+            {
+                "id": 18658684,
+                "name": "MS14-066: Security Update for Windows 1 for x64-based Systems (KB2992611)",
+                "category": "Security",
+                "severity": "Critical",
+                "kbArticle": "Q2992611",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS14-066",
+                "missingCount": 6
+            },
+            {
+                "id": 18661115,
+                "name": "MS15-132: Security Update for Windows 1 for x64-based Systems (KB298256)",
+                "category": "Security",
+                "severity": "Important",
+                "kbArticle": "Q298256",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS56-256",
+                "missingCount": 2
+            },
+            {
+                "id": 18661129,
+                "name": "MS15-132: Security Update for Windows 1 for x64-based Systems (KB798046)",
+                "category": "Security",
+                "severity": "Important",
+                "kbArticle": "Q798046",
+                "patchUrl": null,
+                "product": "Windows 1",
+                "vendor": "Microsoft Corporation",
+                "bulletin": "MS46-046",
+                "missingCount": 1
+            }
+        ],
+        "pageNumber": 1,
+        "pageSize": 10,
+        "totalRecords": 215
+    }
+    return json.dumps(sample_data['patchRecords'], indent=2)
 
-    Returns:
-        Patch summaries with following information in a tabular format:
-            - id: Unique identifier for the patch (integer).
-            - name: Name of the patch (e.g., "MS14-043: Security Update for Windows 1").
-            - category: Category of the patch (e.g., "Security").
-            - severity: Severity level of the patch (e.g., "Critical").
-            - kbArticle: Knowledge base article ID (e.g., "Q2978742").
-            - patchUrl: URL for the patch (null if unavailable).
-            - product: Affected product (e.g., "Windows 1").
-            - vendor: Vendor of the product (e.g., "Microsoft Corporation").
-            - bulletin: Bulletin ID (e.g., "MS14-043").
-            - missingCount: Number of devices missing the patch (integer).
-        Or Error or debug info.
+# @mcp.tool
+# def get_patch_summaries() -> str:
+#     """
+#     Retrieve a list of patch summaries for a customer account by authenticating with the MaaS360 authentication API
+#     and then calling the patch summary API. The patch summaries contain details about software patches,
+#     including their severity, category, and the number of devices missing each patch.
 
-    Raises:
-        Exception: If the authentication or patch summary API call fails.
-    """
-    try:
-        # Get fresh auth token
-        headers = {
-            'X-FBL-UI-LOC': 'en',
-            'Accept-Charset': 'UTF',
-            'Cookie': PORTAL_COOKIE,
-            'Content-Type': 'application/json'
-        }
+#     Returns:
+#         Patch summaries with following information in a tabular format:
+#             - id: Unique identifier for the patch (integer).
+#             - name: Name of the patch (e.g., "MS14-043: Security Update for Windows 1").
+#             - category: Category of the patch (e.g., "Security").
+#             - severity: Severity level of the patch (e.g., "Critical").
+#             - kbArticle: Knowledge base article ID (e.g., "Q2978742").
+#             - patchUrl: URL for the patch (null if unavailable).
+#             - product: Affected product (e.g., "Windows 1").
+#             - vendor: Vendor of the product (e.g., "Microsoft Corporation").
+#             - bulletin: Bulletin ID (e.g., "MS14-043").
+#             - missingCount: Number of devices missing the patch (integer).
+#         Or Error or debug info.
+
+#     Raises:
+#         Exception: If the authentication or patch summary API call fails.
+#     """
+#     try:
+#         # Get fresh auth token
+#         headers = {
+#             'X-FBL-UI-LOC': 'en',
+#             'Accept-Charset': 'UTF',
+#             'Cookie': PORTAL_COOKIE,
+#             'Content-Type': 'application/json'
+#         }
         
-        url = f"{SERVICES_BASE_URL}/patch-mgmt/apis/2.0/internal/customer/{CUSTOMER_ID}/patch-summary"
-        response = requests.get(url, headers=headers, timeout=30)
-        # Debug information
-        debug_info = {
-            "status_code": response.status_code,
-            "headers": dict(response.headers),
-            "content_length": len(response.content),
-            "raw_content": response.text[:500] + "..." if len(response.text) > 500 else response.text
-        }
-        response.raise_for_status()  # Raises an HTTPError for bad responses
-        # Check if response has content
-        if not response.text.strip():
-            return f"API returned empty response. Debug info: {json.dumps(debug_info, indent=2)}"
-        # Check if patchRecords is present in response
-        response_json = response.json()
-        if 'patchRecords' not in response_json:
-            raise Exception(f"Patch summary API response missing 'patchRecords' key. Debug info: {json.dumps(debug_info, indent=2)}")
+#         url = f"{SERVICES_BASE_URL}/patch-mgmt/apis/2.0/internal/customer/{CUSTOMER_ID}/patch-summary"
+#         response = requests.get(url, headers=headers, timeout=30)
+#         # Debug information
+#         debug_info = {
+#             "status_code": response.status_code,
+#             "headers": dict(response.headers),
+#             "content_length": len(response.content),
+#             "raw_content": response.text[:500] + "..." if len(response.text) > 500 else response.text
+#         }
+#         response.raise_for_status()  # Raises an HTTPError for bad responses
+#         # Check if response has content
+#         if not response.text.strip():
+#             return f"API returned empty response. Debug info: {json.dumps(debug_info, indent=2)}"
+#         # Check if patchRecords is present in response
+#         response_json = response.json()
+#         if 'patchRecords' not in response_json:
+#             raise Exception(f"Patch summary API response missing 'patchRecords' key. Debug info: {json.dumps(debug_info, indent=2)}")
 
-        return json.dumps(response_json['patchRecords'], indent=2)
+#         return json.dumps(response_json['patchRecords'], indent=2)
         
-    except Exception as e:
-        if "Authentication" in str(e):
-            return f"Authentication failed: {str(e)}"
-        elif hasattr(e, 'response'):
-            return f"HTTP Error {e.response.status_code}: {str(e)}\nResponse: {e.response.text}"
-        else:
-            return f"Request failed: {str(e)}"
+#     except Exception as e:
+#         if "Authentication" in str(e):
+#             return f"Authentication failed: {str(e)}"
+#         elif hasattr(e, 'response'):
+#             return f"HTTP Error {e.response.status_code}: {str(e)}\nResponse: {e.response.text}"
+#         else:
+#             return f"Request failed: {str(e)}"
+
+
 
 
 @mcp.tool
