@@ -7,7 +7,7 @@ import requests
 import json
 import xml.etree.ElementTree as ET
 from enum import Enum
-from typing import List, Union, Annotated
+from typing import TypedDict, List, Union, Annotated
 from pydantic import Field
 
 # API Base URLs Configuration
@@ -212,8 +212,20 @@ def echo_tool(text: str) -> str:
     """Echo the input text"""
     return text
 
+class PatchRecord(TypedDict):
+    id: int
+    name: str
+    category: str
+    severity: str
+    kbArticle: str
+    patchUrl: str
+    product: str
+    vendor: str
+    bulletin: str
+    missingCount: int
+
 @mcp.tool
-def get_patch_sumamries_mock() -> str:
+def get_patch_sumamries_mock() -> List[PatchRecord]:
     """Mock function to return sample patch summaries"""
     sample_data = {
         "patchRecords": [
@@ -342,7 +354,7 @@ def get_patch_sumamries_mock() -> str:
         "pageSize": 10,
         "totalRecords": 215
     }
-    return json.dumps(sample_data['patchRecords'], indent=2)
+    return sample_data['patchRecords']
 
 # @mcp.tool
 # def get_patch_summaries() -> str:
